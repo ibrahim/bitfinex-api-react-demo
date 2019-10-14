@@ -32,7 +32,7 @@ function wsconnect ({ saveBook, precesion, setConnectionStatus, connectionStatus
     BOOK.psnap = {}
     BOOK.mcnt = 0
     cli.send(JSON.stringify({ event: 'conf', flags: 65536 + 131072 }))
-    cli.send(JSON.stringify({ event: 'subscribe', channel: 'book', pair: pair, prec: precesion, len: 25, freq: 'F0' }))
+    cli.send(JSON.stringify({ event: 'subscribe', channel: 'book', pair: pair, prec: "P0", len: 25, freq: 'F0' }))
   }
   cli.onclose = function open () {
     seq = null

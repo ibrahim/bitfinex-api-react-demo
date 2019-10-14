@@ -8,8 +8,9 @@ import * as Actions from './actions'
 import {throttle} from 'lodash'
 import {MdZoomIn, MdZoomOut} from 'react-icons/md'
 import {FaPlus, FaMinus} from 'react-icons/fa'
+import numberWithCommas from '../../helpers/format-number'
 
-const PRECESION = ["P0","P1","P3","P4"]
+const PRECESION = ["P0","P1"]
 const OrderBook = connect(s => (
   { book: s.orderbook,
 }))((props) => {
@@ -17,7 +18,7 @@ const OrderBook = connect(s => (
   const { bids, asks, mcnt } = book
   // const [connected, setConnected] = useState(false)
   const saveBook = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 500))
-  const [precesion, setPrecision] = useState(1)
+  const [precesion, setPrecision] = useState(0)
   const [scale, setScale] = useState(1.0)
   const decPrecision = () => precesion > 0 && setPrecision((precesion + PRECESION.length - 1) % PRECESION.length)
   const incPrecision = () => precesion < 4 && setPrecision((precesion + 1) % PRECESION.length)
@@ -29,7 +30,7 @@ const OrderBook = connect(s => (
   const startConnection = () => !connectionStatus && setConnectionStatus(true)
   const stopConnection = () => connectionStatus && setConnectionStatus(false)
 
-  const prec = (precesion + 1) % 5
+  const prec = precesion % PRECESION.length
   useEffect(() => {
     wsconnect({book, saveBook, precesion: PRECESION[precesion], setConnectionStatus, connectionStatus})
   }, [connectionStatus])
@@ -76,9 +77,7 @@ const OrderBook = connect(s => (
       <Tools>
       { !connectionStatus && <Icon onClick={ startConnection }> start </Icon> }
       { connectionStatus && <Icon onClick={ stopConnection }> stop </Icon> }
-      <Icon onClick={ decPrecision }><FaMinus/></Icon>
-      <Icon>{ PRECESION[precesion]} </Icon>
-      <Icon onClick={ incPrecision }><FaPlus/></Icon>
+      <Icon onClick={ incPrecision }> precesion </Icon>
       <Icon onClick={ decScale }><MdZoomOut/></Icon>
       <Icon onClick={ incScale }><MdZoomIn/></Icon>
       </Tools>
@@ -87,7 +86,7 @@ const OrderBook = connect(s => (
       <Side>
         <thead>
         <Row>
-          <Col>Count</Col>
+          <Col className="count">Count</Col>
           <Col>Amount</Col>
           <Col className="total">Total</Col>
           <Col>Price</Col>
@@ -101,10 +100,10 @@ const OrderBook = connect(s => (
           <Row style={{
             background: `linear-gradient(to left, #314432 ${ (total * 100) / (maxBidsTotal * scale)}%, #1b262d 0%)`
           }}>
-            <Col>{ cnt }</Col>
-            <Col>{ amount.toFixed(prec) }</Col>
-            <Col className="total">{ total.toFixed(prec) }</Col>
-            <Col>{ price }</Col>
+            <Col className="count">{ cnt }</Col>
+            <Col>{ amount.toFixed(2) }</Col>
+            <Col className="total">{ total.toFixed(2) }</Col>
+            <Col>{ numberWithCommas(price.toFixed(prec)) }</Col>
           </Row>
         )
       })}
@@ -113,10 +112,10 @@ const OrderBook = connect(s => (
       <Side>
         <thead>
         <Row>
-          <Col>Count</Col>
-          <Col>Amount</Col>
-          <Col className="total">Total</Col>
           <Col>Price</Col>
+          <Col className="total">Total</Col>
+          <Col>Amount</Col>
+          <Col className="count">Count</Col>
         </Row>
       </thead>
       <tbody>
@@ -127,10 +126,10 @@ const OrderBook = connect(s => (
           <Row style={{
             background: `linear-gradient(to right, #402c33 ${ (total * 100) / (maxAsksTotal * scale)}%, #1b262d 0%)`
           }}>
-            <Col>{ cnt }</Col>
-            <Col>{ amount.toFixed(prec) }</Col>
-            <Col className="total">{ total.toFixed(prec) }</Col>
-            <Col>{ price }</Col>
+            <Col>{ numberWithCommas(price.toFixed(prec)) }</Col>
+            <Col className="total">{ total.toFixed(2) }</Col>
+            <Col>{ amount.toFixed(2) }</Col>
+            <Col className="count">{ cnt }</Col>
           </Row>
         )
       })}
@@ -148,6 +147,12 @@ export const Panel = styled.div`
   display: flex;
   flex-flow: column;
   width:645px;
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 `;
 
 export const Sides = styled.div`
@@ -163,13 +168,13 @@ thead {
   td {
     text-transform:uppercase;
     font-size:12px;
-    color:#ddd!important;
+    color:#aaa!important;
   }
 }
 `;
 
 export const Row = styled.tr`
-  td:first-child{
+  td.count{
     text-align:center;
   }
 `;
@@ -179,12 +184,6 @@ export const Col = styled.td`
   flex:1;
   font:normal 14px Arial;
   text-align:right;
-  -webkit-touch-callout: none;
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
             `;
 
 export const Bar = styled.div`
@@ -202,6 +201,10 @@ export const Bar = styled.div`
     font:normal 18px Arial!important;
     font-weight:normal;
     justify-self:flex-start;
+    span {
+      color:#888;
+      font-size:15px;
+    }
   }
 `;
 export const Tools = styled.div`
