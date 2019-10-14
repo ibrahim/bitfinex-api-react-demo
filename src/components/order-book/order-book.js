@@ -75,8 +75,8 @@ const OrderBook = connect(s => (
         <Bar>
       <h3>Order Book <span>BTC/USD</span></h3>
       <Tools>
-      { !connectionStatus && <Icon onClick={ startConnection }> start </Icon> }
-      { connectionStatus && <Icon onClick={ stopConnection }> stop </Icon> }
+      { !connectionStatus && <Icon onClick={ startConnection }> Connect </Icon> }
+      { connectionStatus && <Icon onClick={ stopConnection }> Disconnect </Icon> }
       <Icon onClick={ incPrecision }> precesion </Icon>
       <Icon onClick={ decScale }><MdZoomOut/></Icon>
       <Icon onClick={ incScale }><MdZoomIn/></Icon>
