@@ -8,7 +8,7 @@ function TradeReducer(state, action) {
   }
 
   if (action.type === constants.SAVE_TICKER) {
-    return action.payload
+    return [ ...action.payload ]
   } else {
     return state
   }

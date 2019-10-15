@@ -27,7 +27,7 @@ const Trades = connect(s => ({ trades: s.trades }))((props) => {
 
   // console.log({trades})
   // const [ CHANNEL_ID,[ID,MTS,AMOUNT,PRICE]] = Array.isArray(trades) ? trades : empty_trades
-  const _trades = trades && Array.isArray(trades[1]) && trades[1].reduce((acc,item) => {
+  const _trades = trades && Array.isArray(trades) && trades.reduce((acc,item) => {
     const day = item[1]
     const day_key = moment(day).format("YYYYMMDD")
     if(!Array.isArray(acc[day_key])) acc[day_key] = []
