@@ -101,11 +101,13 @@ const OrderBook = connect(s => (
       {_bids && Object.keys(_bids).map((k,i) => {
         const item = _bids[k]
         const {cnt, amount, price, total} = item
+        const percentage = (total * 100) / (maxBidsTotal * scale)
         return(
           <Row 
             key={`book-${cnt}${amount}${price}${total}`}
             style={{
-            background: `linear-gradient(to left, #314432 ${ (total * 100) / (maxBidsTotal * scale)}%, #1b262d 0%)`
+            backgroundImage: `linear-gradient(to left, #314432 ${ percentage }%, #1b262d 0%)`,
+            backgroundAttachment: 'fixed'
           }}>
             <Col className="count">{ cnt }</Col>
             <Col>{ amount.toFixed(2) }</Col>
@@ -129,9 +131,11 @@ const OrderBook = connect(s => (
       {_asks && Object.keys(_asks).map((k,i) => {
         const item = _asks[k]
         const {cnt, amount, price, total} = item
+        const percentage = (total * 100) / (maxAsksTotal * scale)
         return(
           <Row style={{
-            background: `linear-gradient(to right, #402c33 ${ (total * 100) / (maxAsksTotal * scale)}%, #1b262d 0%)`
+            backgroundImage: `linear-gradient(to right, #402c33 ${ percentage }%, #1b262d 0%)`,
+            backgroundAttachment: 'fixed'
           }}>
             <Col>{ numberWithCommas(price.toFixed(prec)) }</Col>
             <Col className="total">{ total.toFixed(2) }</Col>
@@ -143,10 +147,20 @@ const OrderBook = connect(s => (
     </tbody>
       </Side>
     </Sides>
-    </Panel>
+  </Panel>
   </div>
   )
 })
+
+// const Depth = () => {
+//   return (
+//   <svg width="300px" height="20" xmlns="http://www.w3.org/2000/svg"><linearGradient id="SVGID_124_" gradientUnits="userSpaceOnUse" x1="205.2935" y1="707.9475" x2="206.9863" y2="707.9475" ><stop  offset="0" style={{ stopColor: "#1b262d" }}/><stop  offset="0.78" style={{ stopColor: "red" }}/><stop  offset="1" style={{ stopColor: "red"}}/></linearGradient><g><rect fill="url(#SVGID_124_)" stroke-width="0" x="0" y="0" width="100%" height="100%" /></g></svg>
+//   )
+// }
+//
+// const depthbarSVG = (props) => {
+//   return  "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(`<svg width="500px" height="100px" xmlns="http://www.w3.org/2000/svg"><linearGradient id="SVGID_124_" gradientUnits="userSpaceOnUse" x1="205.2935" y1="707.9475" x2="206.9863" y2="707.9475"><stop  offset="0" style="stop-color:#1b262d"/><stop  offset="${ props.percentage / 100}" style="stop-color:${ props.color }"/><stop  offset="1" style="stop-color:${ props.color }"/></linearGradient><g><rect fill="url(#SVGID_124_)" stroke-width="0" x="0" y="0" width="300px" height="100%" /></g></svg>`)))
+// }
 
 export const Panel = styled.div`
   background-color: #1b262d;
@@ -155,6 +169,8 @@ export const Panel = styled.div`
   flex-flow: column;
   width:645px;
   margin:5px;
+  padding:5px;
+  box-sizing:border-box;
   -webkit-touch-callout: none;
     -webkit-user-select: none;
      -khtml-user-select: none;
@@ -170,7 +186,9 @@ export const Sides = styled.div`
 `;
 export const Side = styled.table`
 border-spacing:0px;
-flex-basis:320px;
+flex-basis:50%;
+width:calc(50% - 2px);
+box-sizing:border-box;
 margin:0px 1px;
 thead {
   td {
@@ -185,6 +203,20 @@ export const Row = styled.tr`
   td.count{
     text-align:center;
   }
+  td.depthbar {
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index:1;
+    svg {
+    }
+  }
+  position:relative;
 `;
 export const Col = styled.td`
   color:#F0F0f0;

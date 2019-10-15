@@ -113,8 +113,10 @@ export const Sides = styled.div`
 `;
 export const Side = styled.table`
 border-spacing:0px;
-flex-basis:400px;
-margin:0px 1px;
+flex-basis:calc(100% - 10px);
+box-sizing:border-box;
+width:calc(100% - 10px);
+margin:5px;
 thead {
   td {
     text-transform:uppercase;
