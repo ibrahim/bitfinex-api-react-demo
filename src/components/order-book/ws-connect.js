@@ -59,8 +59,8 @@ function wsconnect ({ saveBook, saveTrades, saveTicker, precesion, setConnection
     if(msg.event) return
 
     if(msg[0] === channels["trades"]){
-      (Array.isArray(msg[1]) || Array.isArray(msg[2])) && saveTrades(msg)
-      console.log("got trades", msg)
+      (Array.isArray(msg[1]) || (msg[1]==='te' && Array.isArray(msg[2])) ) && saveTrades(msg)
+      // console.log("got trades", msg)
     }
     if(msg[0] === channels["ticker"]){
        Array.isArray(msg[1]) && saveTicker(msg)

@@ -13,7 +13,7 @@ function TradeReducer(state, action) {
       const trades = [action.payload[2], ...prev_trades].slice(0,21)
       return trades
     }else{
-      return action.payload[1]
+      return action.payload[1].slice(0,21)
     }
   } else {
     return state
