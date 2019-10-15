@@ -48,17 +48,17 @@ const Trades = connect(s => ({ trades: s.trades }))((props) => {
               </Row>
           </thead>
           <tbody>  
-              {_trades && Object.keys(_trades).map(k => {
+              {_trades && Object.keys(_trades).map((k, kx)=> {
                 const formatted_date = moment(k).format('MMMM Do YYYY')
                 return(
-                  <React.Fragment>
+                  <React.Fragment key={`trade-${formatted_date}`}>
                     <RowHeader>
                       <td colspan="3">
                       {formatted_date}
                       </td>
                     </RowHeader>
                     <React.Fragment>
-                      { Array.isArray(_trades[k]) && _trades[k].map(i => {
+                      { Array.isArray(_trades[k]) && _trades[k].map((i, ix) => {
                       const time = i[1] && moment(i[1]).format("hh:mm:ss")
                       const price = i[2] && numberWithCommas(i[3].toFixed(1))
                       const amount = i[3] && Math.abs(i[2]).toFixed(4)
@@ -66,7 +66,7 @@ const Trades = connect(s => ({ trades: s.trades }))((props) => {
                       const status = amount > 0 ? "green" : "red" 
                       const grade = Math.abs(amount) > 0.5 ? "high" : "low"
                       return(
-                        <Row className={`${status} ${grade}`}>
+                        <Row className={`${status} ${grade}`} key={`trade-${ix}${time}-${price}-${amount}`}>
                           <Col><span/ >{ time}</Col>
                           <Col>{ price } </Col>
                           <Col>{ amount1 }{typeof zeros === 'string' && <em>{ zeros }</em> }</Col>

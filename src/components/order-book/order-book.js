@@ -102,7 +102,9 @@ const OrderBook = connect(s => (
         const item = _bids[k]
         const {cnt, amount, price, total} = item
         return(
-          <Row style={{
+          <Row 
+            key={`book-${cnt}${amount}${price}${total}`}
+            style={{
             background: `linear-gradient(to left, #314432 ${ (total * 100) / (maxBidsTotal * scale)}%, #1b262d 0%)`
           }}>
             <Col className="count">{ cnt }</Col>
