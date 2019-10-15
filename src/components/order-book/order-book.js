@@ -4,6 +4,8 @@ import useInterval from '../../helpers/use-interval'
 import {connect} from 'react-redux'
 import styled from "styled-components"
 import * as Actions from './actions'
+import * as TickerActions from '../ticker/actions'
+import * as TradesActions from '../trades/actions'
 import {throttle} from 'lodash'
 import {MdZoomIn, MdZoomOut} from 'react-icons/md'
 import {FaPlus, FaMinus} from 'react-icons/fa'
@@ -16,7 +18,9 @@ const OrderBook = connect(s => (
   const { book } = props
   const { bids, asks } = book
 
-  const saveBook = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 500))
+  const saveBook   = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 500))
+  const saveTrades = useCallback(throttle((b) => props.dispatch(TradesActions.saveTrades(b)), 500))
+  const saveTicker = useCallback(throttle((b) => props.dispatch(TickerActions.saveTicker(b)), 500))
 
   const [precesion, setPrecision] = useState(0)
   const [scale, setScale] = useState(1.0)
@@ -33,7 +37,7 @@ const OrderBook = connect(s => (
 
   const prec = precesion % PRECESION.length
   useEffect(() => {
-    wsconnect({book, saveBook, setConnectionStatus, connectionStatus})
+    wsconnect({book, saveBook, saveTicker, saveTrades, setConnectionStatus, connectionStatus})
   }, [connectionStatus])
 
   const _asks = asks && Object.keys(asks).reduce((acc,k,i) => { 

@@ -4,6 +4,7 @@ import configureStore from './store'
 //import Dashboard from './components/dashboard'
 import OrderBook from './components/order-book'
 import Ticker from './components/ticker'
+import Trades from './components/trades'
 import styled from "styled-components"
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
         <OrderBook />     
         <Side>
           <Ticker />
+          <Trades />
         </Side>
       </Container>
     </Provider>
