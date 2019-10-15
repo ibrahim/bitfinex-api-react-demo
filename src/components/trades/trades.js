@@ -62,13 +62,14 @@ const Trades = connect(s => ({ trades: s.trades }))((props) => {
                       const time = i[1] && moment(i[1]).format("hh:mm:ss")
                       const price = i[2] && numberWithCommas(i[3].toFixed(1))
                       const amount = i[3] && Math.abs(i[2]).toFixed(4)
+                      const [amount1, zeros] = String(amount).split(/(0+)$/)
                       const status = amount > 0 ? "green" : "red" 
                       const grade = Math.abs(amount) > 0.5 ? "high" : "low"
                       return(
                         <Row className={`${status} ${grade}`}>
                           <Col><span/ >{ time}</Col>
                           <Col>{ price } </Col>
-                          <Col>{ amount }</Col>
+                          <Col>{ amount1 }{typeof zeros === 'string' && <em>{ zeros }</em> }</Col>
                         </Row>
                       )
                       })}
@@ -185,7 +186,12 @@ export const Col = styled.td`
   flex:1;
   font:normal 14px Arial;
   text-align:center;
-            `;
+  em {
+    color: #666;
+    font-weight:normal;
+    font-style:normal;
+  }
+`;
 
 export const Bar = styled.div`
   display:flex;
