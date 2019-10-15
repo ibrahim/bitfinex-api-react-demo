@@ -101,13 +101,12 @@ const OrderBook = connect(s => (
       {_bids && Object.keys(_bids).map((k,i) => {
         const item = _bids[k]
         const {cnt, amount, price, total} = item
-        const percentage = (total * 100) / (maxBidsTotal * scale)
+        const percentage = ((total * 100) / (maxBidsTotal * scale))
         return(
           <Row 
             key={`book-${cnt}${amount}${price}${total}`}
             style={{
-            backgroundImage: `linear-gradient(to left, #314432 ${ percentage }%, #1b262d 0%)`,
-            backgroundAttachment: 'fixed'
+            backgroundImage: `linear-gradient(to left, #314432 ${ percentage }%, #1b262d 0%)`
           }}>
             <Col className="count">{ cnt }</Col>
             <Col>{ amount.toFixed(2) }</Col>
@@ -134,8 +133,7 @@ const OrderBook = connect(s => (
         const percentage = (total * 100) / (maxAsksTotal * scale)
         return(
           <Row style={{
-            backgroundImage: `linear-gradient(to right, #402c33 ${ percentage }%, #1b262d 0%)`,
-            backgroundAttachment: 'fixed'
+            backgroundImage: `linear-gradient(to right, #402c33 ${ percentage }%, #1b262d 0%)`
           }}>
             <Col>{ numberWithCommas(price.toFixed(prec)) }</Col>
             <Col className="total">{ total.toFixed(2) }</Col>
@@ -203,20 +201,6 @@ export const Row = styled.tr`
   td.count{
     text-align:center;
   }
-  td.depthbar {
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    position:absolute;
-    top:0px;
-    bottom:0px;
-    left:0px;
-    right:0px;
-    z-index:1;
-    svg {
-    }
-  }
-  position:relative;
 `;
 export const Col = styled.td`
   color:#F0F0f0;
