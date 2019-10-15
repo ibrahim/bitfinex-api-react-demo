@@ -18,9 +18,9 @@ const OrderBook = connect(s => (
   const { book } = props
   const { bids, asks } = book
 
-  const saveBook   = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 500))
-  const saveTrades = useCallback(throttle((b) => props.dispatch(TradesActions.saveTrades(b)), 500))
-  const saveTicker = useCallback(throttle((b) => props.dispatch(TickerActions.saveTicker(b)), 500))
+  const saveBook   = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 1000))
+  const saveTrades = useCallback(throttle((b) => props.dispatch(TradesActions.saveTrades(b)), 1000))
+  const saveTicker = useCallback(throttle((b) => props.dispatch(TickerActions.saveTicker(b)), 1000))
 
   const [precesion, setPrecision] = useState(0)
   const [scale, setScale] = useState(1.0)
@@ -198,6 +198,9 @@ thead {
 `;
 
 export const Row = styled.tr`
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  display: flex;
   td.count{
     text-align:center;
   }
