@@ -40,7 +40,7 @@ const OrderBook = connect(s => (
     wsconnect({book, saveBook, saveTicker, saveTrades, setConnectionStatus, connectionStatus})
   }, [connectionStatus])
 
-  const _asks = asks && Object.keys(asks).reduce((acc,k,i) => { 
+  const _asks = asks && Object.keys(asks).slice(0,21).reduce((acc,k,i) => { 
         const total = Object.keys(asks).slice(0,i+1).reduce((t,i) => {
           t = t + asks[i].amount
           return t
@@ -56,7 +56,7 @@ const OrderBook = connect(s => (
       return t 
     }
   },0)
-  const _bids = bids && Object.keys(bids).reduce((acc,k,i) => { 
+  const _bids = bids && Object.keys(bids).slice(0,21).reduce((acc,k,i) => { 
         const total = Object.keys(bids).slice(0,i+1).reduce((t,i) => {
           t = t + bids[i].amount
           return t
@@ -152,6 +152,7 @@ export const Panel = styled.div`
   display: flex;
   flex-flow: column;
   width:645px;
+  margin:5px;
   -webkit-touch-callout: none;
     -webkit-user-select: none;
      -khtml-user-select: none;
@@ -203,12 +204,12 @@ export const Bar = styled.div`
   h3 {
     padding:10px 0px 0px 20px;
     margin:0px;
-    font:normal 18px Arial!important;
+    font:normal 16px Arial!important;
     font-weight:normal;
     justify-self:flex-start;
     span {
       color:#888;
-      font-size:15px;
+      font-size:16px;
     }
   }
 `;
@@ -221,5 +222,9 @@ export const Icon = styled.div`
   display:flex;
   flex-grow:0;
   padding:10px;
+  font:normal 15px Arial; 
+  svg {
+    font-size:20px;
+  }
 `;
 export default OrderBook
