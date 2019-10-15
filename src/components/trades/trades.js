@@ -61,7 +61,7 @@ const Trades = connect(s => ({ trades: s.trades }))((props) => {
                       { Array.isArray(_trades[k]) && _trades[k].map(i => {
                       const time = i[1] && moment(i[1]).format("hh:mm:ss")
                       const price = i[2] && numberWithCommas(i[3].toFixed(1))
-                      const amount = i[3] && i[2].toFixed(4)
+                      const amount = i[3] && Math.abs(i[2]).toFixed(4)
                       const status = amount > 0 ? "green" : "red" 
                       const grade = Math.abs(amount) > 0.5 ? "high" : "low"
                       return(
