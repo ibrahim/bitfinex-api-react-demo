@@ -1,6 +1,5 @@
-
 import React, {useEffect, useState, useCallback} from 'react'
-import { wsconnect, connected } from './ws-connect'
+import { wsconnect } from './ws-connect'
 import useInterval from '../../helpers/use-interval'
 import {connect} from 'react-redux'
 import styled from "styled-components"
@@ -15,11 +14,13 @@ const OrderBook = connect(s => (
   { book: s.orderbook,
 }))((props) => {
   const { book } = props
-  const { bids, asks, mcnt } = book
-  // const [connected, setConnected] = useState(false)
+  const { bids, asks } = book
+
   const saveBook = useCallback(throttle((b) => props.dispatch(Actions.saveBook(b)), 500))
+
   const [precesion, setPrecision] = useState(0)
   const [scale, setScale] = useState(1.0)
+
   const decPrecision = () => precesion > 0 && setPrecision((precesion + PRECESION.length - 1) % PRECESION.length)
   const incPrecision = () => precesion < 4 && setPrecision((precesion + 1) % PRECESION.length)
   const decScale = () => setScale(scale + 0.1)
@@ -32,7 +33,7 @@ const OrderBook = connect(s => (
 
   const prec = precesion % PRECESION.length
   useEffect(() => {
-    wsconnect({book, saveBook, precesion: PRECESION[precesion], setConnectionStatus, connectionStatus})
+    wsconnect({book, saveBook, setConnectionStatus, connectionStatus})
   }, [connectionStatus])
 
   const _asks = asks && Object.keys(asks).reduce((acc,k,i) => { 
