@@ -19,7 +19,7 @@
     "socks-proxy-agent": "^4.0.2",
     "styled-components": "^4.4.0",
     "use-throttled-effect": "^0.0.7",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
